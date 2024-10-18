@@ -1,0 +1,14 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: configuration
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/bishop290/landmarks-configs.git
+          skipSslValidation: true
+          default-label: main
+          clone-on-start: true

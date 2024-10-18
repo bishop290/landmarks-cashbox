@@ -1,2 +1,4 @@
 rootProject.name = 'landmarks-cashbox'
 include 'register'
+include 'configuration'
+
