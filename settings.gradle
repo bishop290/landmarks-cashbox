@@ -1,4 +1,10 @@
 rootProject.name = 'landmarks-cashbox'
 include 'register'
 include 'configuration'
+include 'microservices:orders'
+findProject(':microservices:orders')?.name = 'orders'
+include 'microservices:payments'
+findProject(':microservices:payments')?.name = 'payments'
+include 'microservices:tickets'
+findProject(':microservices:tickets')?.name = 'tickets'
 
