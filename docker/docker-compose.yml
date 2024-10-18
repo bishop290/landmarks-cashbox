@@ -1,0 +1,32 @@
+services:
+
+  register:
+    env_file:
+      - 'register.env'
+    build:
+      context: "../register"
+      dockerfile: Dockerfile
+
+  configuration:
+    env_file:
+      - 'configuration.env'
+    build:
+      context: "../configuration"
+      dockerfile: Dockerfile
+    depends_on:
+      - register
+
+  gateway:
+    env_file:
+      - 'configuration.env'
+      - 'register.env'
+      - 'gateway.env'
+    build:
+      context: "../gateway"
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - configuration
+      - register
+
