@@ -7,4 +7,5 @@ include 'microservices:payments'
 findProject(':microservices:payments')?.name = 'payments'
 include 'microservices:tickets'
 findProject(':microservices:tickets')?.name = 'tickets'
+include 'gateway'
 
