@@ -1,32 +1,95 @@
 services:
-
-  register:
-    env_file:
-      - 'register.env'
-    build:
-      context: "../register"
-      dockerfile: Dockerfile
-
   configuration:
-    env_file:
-      - 'configuration.env'
+    environment:
+      CONFIGURATION_PORT: ${CONFIGURATION_PORT}
     build:
       context: "../configuration"
       dockerfile: Dockerfile
+    ports:
+      - "${CONFIGURATION_PORT}:${CONFIGURATION_PORT}"
+    healthcheck:
+      test: "curl --fail --silent localhost:${CONFIGURATION_PORT}/actuator/health | grep UP || exit 1"
+      interval: 20s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+
+  register:
+    environment:
+      REGISTER_HOST: register
+      REGISTER_PORT: ${REGISTER_PORT}
+    build:
+      context: "../register"
+      dockerfile: Dockerfile
+    healthcheck:
+      test: "curl --fail --silent localhost:${REGISTER_PORT}/actuator/health | grep UP || exit 1"
+      interval: 20s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+    ports:
+      - "${REGISTER_PORT}:${REGISTER_PORT}"
     depends_on:
-      - register
+      configuration:
+        condition: service_healthy
 
   gateway:
-    env_file:
-      - 'configuration.env'
-      - 'register.env'
-      - 'gateway.env'
+    environment:
+      CONFIGURATION_HOST: configuration
+      CONFIGURATION_PORT: ${CONFIGURATION_PORT}
+      REGISTER_HOST: register
+      REGISTER_PORT: ${REGISTER_PORT}
+      GATEWAY_PORT: ${GATEWAY_PORT}
     build:
       context: "../gateway"
-      dockerfile: Dockerfile
+      dockerfile: "Dockerfile"
+    healthcheck:
+      test: "curl --fail --silent localhost:${GATEWAY_PORT}/actuator/health | grep UP || exit 1"
+      interval: 20s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
     ports:
-      - "8080:8080"
+      - "${GATEWAY_PORT}:${GATEWAY_PORT}"
     depends_on:
-      - configuration
-      - register
+      register:
+        condition: service_healthy
 
+  orders:
+    environment:
+      CONFIGURATION_HOST: configuration
+      CONFIGURATION_PORT: ${CONFIGURATION_PORT}
+      REGISTER_HOST: register
+      REGISTER_PORT: ${REGISTER_PORT}
+    build:
+      context: "../microservices/orders"
+      dockerfile: "Dockerfile"
+    depends_on:
+      gateway:
+        condition: service_healthy
+
+  payments:
+    environment:
+      CONFIGURATION_HOST: configuration
+      CONFIGURATION_PORT: ${CONFIGURATION_PORT}
+      REGISTER_HOST: register
+      REGISTER_PORT: ${REGISTER_PORT}
+    build:
+      context: "../microservices/payments"
+      dockerfile: "Dockerfile"
+    depends_on:
+      gateway:
+        condition: service_healthy
+
+  tickets:
+    environment:
+      CONFIGURATION_HOST: configuration
+      CONFIGURATION_PORT: ${CONFIGURATION_PORT}
+      REGISTER_HOST: register
+      REGISTER_PORT: ${REGISTER_PORT}
+    build:
+      context: "../microservices/tickets"
+      dockerfile: "Dockerfile"
+    depends_on:
+      gateway:
+        condition: service_healthy
