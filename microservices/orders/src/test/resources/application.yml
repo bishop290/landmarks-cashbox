@@ -1,0 +1,26 @@
+eureka:
+  client:
+    enabled: false
+
+spring:
+  cloud:
+    config:
+      enabled: false
+
+  datasource:
+    url: "jdbc:postgresql://postgres:5432/postgres"
+    username: "postgres"
+    password: "postgres"
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database: "POSTGRESQL"
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+
+  liquibase:
+    enabled: true
+    change-log: "classpath:db.changelog/changelog.sql"
+    drop-first: true
+    default-schema: public

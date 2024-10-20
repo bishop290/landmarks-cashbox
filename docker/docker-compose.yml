@@ -5,8 +5,6 @@ services:
     build:
       context: "../configuration"
       dockerfile: Dockerfile
-    ports:
-      - "${CONFIGURATION_PORT}:${CONFIGURATION_PORT}"
     healthcheck:
       test: "curl --fail --silent localhost:${CONFIGURATION_PORT}/actuator/health | grep UP || exit 1"
       interval: 20s
@@ -55,6 +53,19 @@ services:
       register:
         condition: service_healthy
 
+  database:
+    image: postgres:15-alpine
+    hostname: database
+    environment:
+      - POSTGRES_USER=${PSQL_USER}
+      - POSTGRES_PASSWORD=${PSQL_PASS}
+      - POSTGRES_DB=${PSQL_DB}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 20s
+      timeout: 5s
+      retries: 10
+
   orders:
     environment:
       CONFIGURATION_HOST: configuration
@@ -66,6 +77,8 @@ services:
       dockerfile: "Dockerfile"
     depends_on:
       gateway:
+        condition: service_healthy
+      database:
         condition: service_healthy
 
   payments:
@@ -80,6 +93,8 @@ services:
     depends_on:
       gateway:
         condition: service_healthy
+      database:
+        condition: service_healthy
 
   tickets:
     environment:
@@ -92,4 +107,6 @@ services:
       dockerfile: "Dockerfile"
     depends_on:
       gateway:
+        condition: service_healthy
+      database:
         condition: service_healthy
