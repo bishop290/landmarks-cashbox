@@ -1,6 +1,7 @@
 spring:
   application:
     name: payments
+
   config:
     import: configserver:http://${CONFIGURATION_HOST:localhost}:${CONFIGURATION_PORT:8888}
     fail-fast: true

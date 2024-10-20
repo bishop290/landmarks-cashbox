@@ -1,10 +1,7 @@
 --liquibase formatted sql
 
 --changeset Grigorii_Kuznetsov:1
-create schema if not exists orders;
-
---changeset Grigorii_Kuznetsov:2
-create table orders.orders (
+create table orders (
     id bigserial primary key,
     customer varchar(100) not null,
     visitors Integer not null,
@@ -14,8 +11,8 @@ create table orders.orders (
     status varchar(100) not null);
 
 
---changeset Grigorii_Kuznetsov:3
-insert into orders.orders(customer, visitors, amount, landscape, attraction, status)
+--changeset Grigorii_Kuznetsov:2
+insert into orders(customer, visitors, amount, landscape, attraction, status)
 values
 ('Customer-1', 2, 5000, 'Landscape-1', 'CASTLE', 'NEW'),
 ('Customer-2', 1, 7000, 'Landscape-2', 'CASTLE', 'NEW'),

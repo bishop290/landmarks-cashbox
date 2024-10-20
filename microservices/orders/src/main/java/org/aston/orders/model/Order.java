@@ -7,7 +7,7 @@ import lombok.*;
 @Entity
 @Builder
 @AllArgsConstructor
-@Table(name = "orders", schema = "orders")
+@Table(name = "orders")
 @NoArgsConstructor(force = true)
 public class Order {
     @Id

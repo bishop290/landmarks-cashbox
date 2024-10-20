@@ -1,4 +1,4 @@
-package org.aston.tickets.model;
+package org.aston.payments.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,15 +10,12 @@ import lombok.NoArgsConstructor;
 @Entity
 @Builder
 @AllArgsConstructor
-@Table(name = "tickets")
+@Table(name = "payments")
 @NoArgsConstructor(force = true)
-public class Ticket {
+public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "landscape", length = 100)
-    private String landscape;
 
     @Column(name = "amount")
     private Long amount;

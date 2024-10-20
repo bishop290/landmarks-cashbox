@@ -53,9 +53,37 @@ services:
       register:
         condition: service_healthy
 
-  database:
+  db-orders:
     image: postgres:15-alpine
-    hostname: database
+    hostname: db-orders
+    user: "${PSQL_USER}"
+    environment:
+      - POSTGRES_USER=${PSQL_USER}
+      - POSTGRES_PASSWORD=${PSQL_PASS}
+      - POSTGRES_DB=${PSQL_DB}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 20s
+      timeout: 5s
+      retries: 10
+
+  db-tickets:
+    image: postgres:15-alpine
+    hostname: db-orders
+    user: "${PSQL_USER}"
+    environment:
+      - POSTGRES_USER=${PSQL_USER}
+      - POSTGRES_PASSWORD=${PSQL_PASS}
+      - POSTGRES_DB=${PSQL_DB}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 20s
+      timeout: 5s
+      retries: 10
+
+  db-payments:
+    image: postgres:15-alpine
+    hostname: db-orders
     user: "${PSQL_USER}"
     environment:
       - POSTGRES_USER=${PSQL_USER}
@@ -79,7 +107,7 @@ services:
     depends_on:
       gateway:
         condition: service_healthy
-      database:
+      db-orders:
         condition: service_healthy
 
   payments:
@@ -94,7 +122,7 @@ services:
     depends_on:
       gateway:
         condition: service_healthy
-      database:
+      db-payments:
         condition: service_healthy
 
   tickets:
@@ -109,5 +137,5 @@ services:
     depends_on:
       gateway:
         condition: service_healthy
-      database:
+      db-tickets:
         condition: service_healthy

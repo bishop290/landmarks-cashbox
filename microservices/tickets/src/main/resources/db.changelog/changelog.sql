@@ -1,17 +1,14 @@
 --liquibase formatted sql
 
 --changeset Grigorii_Kuznetsov:1
-create schema if not exists tickets;
-
---changeset Grigorii_Kuznetsov:2
-create table tickets.tickets (
+create table tickets (
     id bigserial primary key,
     landscape varchar(100) not null,
     amount bigserial not null);
 
 
---changeset Grigorii_Kuznetsov:3
-insert into tickets.tickets(landscape, amount)
+--changeset Grigorii_Kuznetsov:2
+insert into tickets(landscape, amount)
 values
 ('Landscape-1', 300),
 ('Landscape-2', 600),
