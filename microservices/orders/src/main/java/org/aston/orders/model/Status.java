@@ -1,7 +1,7 @@
 package org.aston.orders.model;
 
 public enum Status {
-    NEW,
+    RESERVED,
     PAID,
     CANCELLED
 }

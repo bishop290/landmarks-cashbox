@@ -1,12 +1,11 @@
 package org.aston.orders.integration.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.aston.orders.dto.OrderRequestDto;
+import org.aston.orders.dto.OrderRequestNewDto;
+import org.aston.orders.dto.OrderRequestUpdateDto;
 import org.aston.orders.integration.IntegrationTest;
 import org.aston.orders.integration.PostgresTestContainer;
 import org.aston.orders.model.Status;
-import org.aston.orders.model.TypeOfAttraction;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,32 +25,20 @@ class OrdersControllerTest extends PostgresTestContainer {
     @Autowired
     private MockMvc mockMvc;
 
-    private OrderRequestDto dto;
-
-    @BeforeEach
-    void init() {
-        dto = new OrderRequestDto(
-                "Customer-66",
-                2,
-                5000L,
-                "Landscape-66",
-                TypeOfAttraction.ARCHEOLOGY,
-                Status.NEW);
-    }
-
     @Test
     @DisplayName("Find by id")
     void testFindById() throws Exception {
         Long id = 1L;
-        String name = "Customer-1";
+        Long price = 300L;
         mockMvc.perform(get(String.format("/api/%s", id)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.customer").value(name));
+                .andExpect(jsonPath("$.price").value(price));
     }
 
     @Test
     @DisplayName("New order")
     void testSave() throws Exception {
+        OrderRequestNewDto dto = new OrderRequestNewDto(2L, 222L);
         mockMvc.perform(MockMvcHelper.postJson("/api", dto))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.status").value("true"));
@@ -61,6 +48,7 @@ class OrdersControllerTest extends PostgresTestContainer {
     @DisplayName("Update order")
     void testUpdate() throws Exception {
         String id = "1";
+        OrderRequestUpdateDto dto = new OrderRequestUpdateDto(Status.CANCELLED);
         mockMvc.perform(MockMvcHelper.putJson(String.format("/api/%s", id), dto))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("true"));

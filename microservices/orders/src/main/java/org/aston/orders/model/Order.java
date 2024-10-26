@@ -14,23 +14,19 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "customer", length = 100)
-    private String customer;
+    @Column(name = "number_of_visitors")
+    private Long numberOfVisitors;
 
-    @Column(name = "visitors")
-    private Integer visitors;
-
-    @Column(name = "amount")
-    private Long amount;
-
-    @Column(name = "landscape", length = 100)
-    private String landscape;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "attraction", length = 100)
-    private TypeOfAttraction attraction;
+    @Column(name = "price")
+    private Long price;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 100)
     private Status status;
+
+    @Column(name = "ticket")
+    private Long ticket;
+
+    @Column(name = "cash_receipt")
+    private Long cashReceipt;
 }

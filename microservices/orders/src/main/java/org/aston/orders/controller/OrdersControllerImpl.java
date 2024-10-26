@@ -2,7 +2,8 @@ package org.aston.orders.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.aston.orders.dto.DefaultResponse;
-import org.aston.orders.dto.OrderRequestDto;
+import org.aston.orders.dto.OrderRequestNewDto;
+import org.aston.orders.dto.OrderRequestUpdateDto;
 import org.aston.orders.dto.OrderResponseDto;
 import org.aston.orders.servises.OrdersService;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,12 +19,12 @@ public class OrdersControllerImpl implements OrdersController {
     }
 
     @Override
-    public DefaultResponse create(OrderRequestDto order) {
+    public DefaultResponse create(OrderRequestNewDto order) {
         return service.create(order);
     }
 
     @Override
-    public DefaultResponse update(Long id, OrderRequestDto order) {
+    public DefaultResponse update(Long id, OrderRequestUpdateDto order) {
         return service.update(id, order);
     }
 }

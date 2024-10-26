@@ -4,17 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.aston.orders.model.Status;
-import org.aston.orders.model.TypeOfAttraction;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderResponseDto {
     private Long id;
-    private String customer;
-    private Integer visitors;
-    private Long amount;
-    private String landscape;
-    private TypeOfAttraction attraction;
+    private Long numberOfVisitors;
+    private Long price;
     private Status status;
+    private Long ticket;
+    private Long cashReceipt;
 }

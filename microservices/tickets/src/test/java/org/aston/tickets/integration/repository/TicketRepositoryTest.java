@@ -23,13 +23,7 @@ class TicketRepositoryTest extends PostgresTestContainer {
     @Test
     @DisplayName("Save ticket to db")
     void testSaveToDb() {
-        Long amount = 5000L;
-        String landscape = "Pepe memorial";
-
-        Ticket ticket = Ticket.builder()
-                .landscape(landscape)
-                .amount(amount)
-                .build();
+        Ticket ticket = Ticket.builder().order(1L).build();
 
         ticketRepository.saveAndFlush(ticket);
         manager.detach(ticket);

@@ -23,9 +23,11 @@ class PaymentRepositoryTest extends PostgresTestContainer {
     @Test
     @DisplayName("Save payment to db")
     void testSaveToDb() {
-        Long amount = 5000L;
-
-        Payment payment = Payment.builder().amount(amount).build();
+        Payment payment = Payment.builder()
+                .price(333L)
+                .order(1L)
+                .cancel(false)
+                .build();
 
         paymentRepository.saveAndFlush(payment);
         manager.detach(payment);

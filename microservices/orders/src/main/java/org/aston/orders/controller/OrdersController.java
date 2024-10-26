@@ -1,7 +1,8 @@
 package org.aston.orders.controller;
 
 import org.aston.orders.dto.DefaultResponse;
-import org.aston.orders.dto.OrderRequestDto;
+import org.aston.orders.dto.OrderRequestNewDto;
+import org.aston.orders.dto.OrderRequestUpdateDto;
 import org.aston.orders.dto.OrderResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +16,9 @@ public interface OrdersController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    DefaultResponse create(@RequestBody OrderRequestDto order);
+    DefaultResponse create(@RequestBody OrderRequestNewDto order);
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    DefaultResponse update(@PathVariable("id") Long id, @RequestBody OrderRequestDto order);
+    DefaultResponse update(@PathVariable("id") Long id, @RequestBody OrderRequestUpdateDto order);
 }

@@ -17,9 +17,6 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "landscape", length = 100)
-    private String landscape;
-
-    @Column(name = "amount")
-    private Long amount;
+    @Column(name = "order_id")
+    private Long order;
 }

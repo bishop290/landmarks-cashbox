@@ -2,7 +2,8 @@ package org.aston.orders.servises;
 
 import lombok.RequiredArgsConstructor;
 import org.aston.orders.dto.DefaultResponse;
-import org.aston.orders.dto.OrderRequestDto;
+import org.aston.orders.dto.OrderRequestNewDto;
+import org.aston.orders.dto.OrderRequestUpdateDto;
 import org.aston.orders.dto.OrderResponseDto;
 import org.aston.orders.exception.OrderNotFoundException;
 import org.aston.orders.mappers.OrderMapper;
@@ -22,13 +23,13 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public DefaultResponse create(OrderRequestDto dto) {
-        repository.save(mapper.dtoToEntity(dto));
+    public DefaultResponse create(OrderRequestNewDto dto) {
+        repository.save(mapper.dtoToEntityCreate(dto));
         return new DefaultResponse(true, "Order saved");
     }
 
     @Override
-    public DefaultResponse update(Long id, OrderRequestDto dto) {
+    public DefaultResponse update(Long id, OrderRequestUpdateDto dto) {
         repository.save(mapper.dtoToEntityUpdate(dto, order(id)));
         return new DefaultResponse(true, "Order updated");
     }

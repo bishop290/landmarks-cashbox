@@ -3,20 +3,17 @@
 --changeset Grigorii_Kuznetsov:1
 create table orders (
     id bigserial primary key,
-    customer varchar(100) not null,
-    visitors Integer not null,
-    amount bigserial,
-    landscape varchar(100) not null,
-    attraction varchar(100) not null,
-    status varchar(100) not null);
+    number_of_visitors bigint,
+    price bigint,
+    status varchar(100) not null,
+    ticket bigint,
+    cash_receipt bigint);
 
 
 --changeset Grigorii_Kuznetsov:2
-insert into orders(customer, visitors, amount, landscape, attraction, status)
+insert into orders(number_of_visitors, price, status, ticket, cash_receipt)
 values
-('Customer-1', 2, 5000, 'Landscape-1', 'CASTLE', 'NEW'),
-('Customer-2', 1, 7000, 'Landscape-2', 'CASTLE', 'NEW'),
-('Customer-3', 1, 8000, 'Landscape-3', 'CASTLE', 'NEW'),
-('Customer-4', 1, 9000, 'Landscape-4', 'CASTLE', 'NEW'),
-('Customer-5', 1, 4000, 'Landscape-5', 'CASTLE', 'NEW'),
-('Customer-6', 1, 3000, 'Landscape-6', 'CASTLE', 'NEW');
+(2, 300, 'RESERVED', 0, 0),
+(1, 400, 'RESERVED', 0, 0),
+(3, 400, 'RESERVED', 0, 0),
+(1, 200, 'RESERVED', 0, 0);

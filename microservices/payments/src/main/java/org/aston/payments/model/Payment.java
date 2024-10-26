@@ -17,6 +17,12 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "amount")
-    private Long amount;
+    @Column(name = "price")
+    private Long price;
+
+    @Column(name = "order_id")
+    private Long order;
+
+    @Column(name = "cancel")
+    private Boolean cancel;
 }
