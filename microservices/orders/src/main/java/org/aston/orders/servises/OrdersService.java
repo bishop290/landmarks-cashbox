@@ -4,6 +4,8 @@ import org.aston.orders.dto.DefaultResponse;
 import org.aston.orders.dto.OrderRequestNewDto;
 import org.aston.orders.dto.OrderRequestUpdateDto;
 import org.aston.orders.dto.OrderResponseDto;
+import org.aston.orders.dto.messages.PaymentsToOrders;
+import org.aston.orders.dto.messages.TicketsToOrders;
 
 public interface OrdersService {
 
@@ -12,4 +14,8 @@ public interface OrdersService {
     DefaultResponse create(OrderRequestNewDto order);
 
     DefaultResponse update(Long id, OrderRequestUpdateDto order);
+
+    void paymentsResponse(PaymentsToOrders message);
+
+    void ticketsResponse(TicketsToOrders message);
 }

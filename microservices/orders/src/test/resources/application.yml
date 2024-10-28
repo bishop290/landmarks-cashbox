@@ -24,3 +24,17 @@ spring:
     change-log: "classpath:db.changelog/changelog.sql"
     drop-first: true
     default-schema: public
+
+  kafka:
+    service: localhost:9092
+
+app:
+  kafka:
+    from-tickets-id: "from-tickets"
+    from-payments-id: "from-payments"
+
+    tickets-orders-topic: "tickets-to-orders"
+    payments-orders-topic: "payments-to-orders"
+
+    orders-tickets-topic: "orders-to-tickets"
+    orders-payments-topic: "orders-to-payments"

@@ -3,6 +3,7 @@ package org.aston.orders.mappers;
 import org.aston.orders.dto.OrderRequestNewDto;
 import org.aston.orders.dto.OrderRequestUpdateDto;
 import org.aston.orders.dto.OrderResponseDto;
+import org.aston.orders.dto.messages.OrdersToPayments;
 import org.aston.orders.model.Order;
 import org.aston.orders.model.Status;
 import org.mapstruct.Mapper;
