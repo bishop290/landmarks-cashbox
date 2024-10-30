@@ -7,3 +7,13 @@ spring:
     fail-fast: true
   profiles:
     active: microservice
+
+  kafka:
+    service: localhost:9092
+
+app:
+  kafka:
+    from-orders-id: "from-orders"
+
+    orders-tickets-topic: "orders-to-tickets"
+    tickets-orders-topic: "tickets-to-orders"

@@ -1,12 +1,12 @@
-package org.aston.payments.configuration;
+package org.aston.tickets.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.aston.payments.dto.messages.OrdersToPayments;
-import org.aston.payments.dto.messages.PaymentsToOrders;
+import org.aston.tickets.dto.messages.OrdersToTickets;
+import org.aston.tickets.dto.messages.TicketsToOrders;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +33,7 @@ public class KafkaConfiguration {
     private String fromOrdersId;
 
     @Bean
-    public ProducerFactory<String, PaymentsToOrders> producerFactoryPaymentsToOrders(ObjectMapper mapper) {
+    public ProducerFactory<String, TicketsToOrders> producerFactoryTicketsToOrders(ObjectMapper mapper) {
         return new DefaultKafkaProducerFactory<>(
                 defaultConfigForProducer(),
                 new StringSerializer(),
@@ -41,13 +41,13 @@ public class KafkaConfiguration {
     }
 
     @Bean
-    public KafkaTemplate<String, PaymentsToOrders> templatePaymentsToOrders(
-            ProducerFactory<String, PaymentsToOrders> factory) {
+    public KafkaTemplate<String, TicketsToOrders> templateTicketsToOrders(
+            ProducerFactory<String, TicketsToOrders> factory) {
         return new KafkaTemplate<>(factory);
     }
 
     @Bean
-    public ConsumerFactory<String, OrdersToPayments> consumerFactoryOrdersToPayments(ObjectMapper mapper) {
+    public ConsumerFactory<String, OrdersToTickets> consumerFactoryOrdersToTickets(ObjectMapper mapper) {
         return new DefaultKafkaConsumerFactory<>(
                 defaultConfigForConsumer(fromOrdersId),
                 new StringDeserializer(),
@@ -55,10 +55,10 @@ public class KafkaConfiguration {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, OrdersToPayments> listenerFactoryOrdersToPayments(
-            ConsumerFactory<String, OrdersToPayments> consumerFactory
+    public ConcurrentKafkaListenerContainerFactory<String, OrdersToTickets> listenerFactoryOrdersToTickets(
+            ConsumerFactory<String, OrdersToTickets> consumerFactory
     ) {
-        ConcurrentKafkaListenerContainerFactory<String, OrdersToPayments> factory =
+        ConcurrentKafkaListenerContainerFactory<String, OrdersToTickets> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory);
         return factory;
