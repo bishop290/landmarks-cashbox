@@ -45,8 +45,8 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     @Transactional
     public DefaultResponse create(OrderRequestNewDto dto) {
-        repository.save(mapper.dtoToEntityCreate(dto));
-        return new DefaultResponse(true, "Order saved");
+        Order order = repository.save(mapper.dtoToEntityCreate(dto));
+        return new DefaultResponse(true, "Order saved", order.getId());
     }
 
     @Override
@@ -55,7 +55,7 @@ public class OrdersServiceImpl implements OrdersService {
         Order order = mapper.dtoToEntityUpdate(dto, order(id));
         repository.save(order);
         ordersToPayments.send(ordersPaymentTopic, paymentsMessageMapper.OrderToMessage(order));
-        return new DefaultResponse(true, "Order updated");
+        return new DefaultResponse(true, "Order updated", order.getId());
     }
 
     @Override

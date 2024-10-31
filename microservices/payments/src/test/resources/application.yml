@@ -26,7 +26,7 @@ spring:
     default-schema: public
 
   kafka:
-    service: localhost:9092
+    service: ${KAFKA_HOST}:${KAFKA_PORT}
 
 app:
   kafka:

@@ -39,7 +39,8 @@ public class PaymentsServiceImpl implements PaymentsService {
                     .price(message.price())
                     .cancel(false)
                     .build());
-            paymentsToOrders.send(paymentsToOrdersTopic,
+            paymentsToOrders.send(
+                    paymentsToOrdersTopic,
                     new PaymentsToOrders(true, payment.getId(), message.order()));
             return;
         }

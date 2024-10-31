@@ -37,11 +37,13 @@ public class TicketsServiceImpl implements TicketsService {
         Optional<Ticket> maybeTicket = repository.findByOrder(message.order());
         if (maybeTicket.isEmpty()) {
             Ticket ticket = repository.save(Ticket.builder().order(message.order()).build());
-            ticketsToOrders.send(ticketsToOrdersTopic,
+            ticketsToOrders.send(
+                    ticketsToOrdersTopic,
                     new TicketsToOrders(true, ticket.getId(), message.order()));
             return;
         }
-        ticketsToOrders.send(ticketsToOrdersTopic,
+        ticketsToOrders.send(
+                ticketsToOrdersTopic,
                 new TicketsToOrders(false, 0L, message.order()));
     }
 }

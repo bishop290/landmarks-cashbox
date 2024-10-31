@@ -12,6 +12,6 @@ public class DefaultAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(OrderNotFoundException.class)
     public DefaultResponse handleOrderNotFoundException(OrderNotFoundException e) {
-        return new DefaultResponse(false, e.getMessage());
+        return new DefaultResponse(false, e.getMessage(), 0L);
     }
 }

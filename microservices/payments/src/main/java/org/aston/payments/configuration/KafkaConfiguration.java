@@ -47,11 +47,14 @@ public class KafkaConfiguration {
     }
 
     @Bean
-    public ConsumerFactory<String, OrdersToPayments> consumerFactoryOrdersToPayments(ObjectMapper mapper) {
+    public ConsumerFactory<String, OrdersToPayments> consumerFactoryOrdersToPayments() {
+        JsonDeserializer<OrdersToPayments> deserializer = new JsonDeserializer<>(
+                OrdersToPayments.class,
+                false);
         return new DefaultKafkaConsumerFactory<>(
                 defaultConfigForConsumer(fromOrdersId),
                 new StringDeserializer(),
-                new JsonDeserializer<>(mapper));
+                deserializer);
     }
 
     @Bean

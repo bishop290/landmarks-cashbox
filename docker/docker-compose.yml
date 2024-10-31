@@ -55,7 +55,6 @@ services:
 
   db-orders:
     image: postgres:15-alpine
-    hostname: db-orders
     user: "${PSQL_USER}"
     environment:
       - POSTGRES_USER=${PSQL_USER}
@@ -69,7 +68,6 @@ services:
 
   db-tickets:
     image: postgres:15-alpine
-    hostname: db-orders
     user: "${PSQL_USER}"
     environment:
       - POSTGRES_USER=${PSQL_USER}
@@ -83,7 +81,6 @@ services:
 
   db-payments:
     image: postgres:15-alpine
-    hostname: db-orders
     user: "${PSQL_USER}"
     environment:
       - POSTGRES_USER=${PSQL_USER}
@@ -95,12 +92,43 @@ services:
       timeout: 5s
       retries: 10
 
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      - ZOOKEEPER_CLIENT_PORT=${ZOOKEEPER_PORT}
+    healthcheck:
+      test: nc -z localhost ${ZOOKEEPER_PORT} || exit -1
+      interval: 20s
+      timeout: 5s
+      retries: 10
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:${ZOOKEEPER_PORT}
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:${KAFKA_PORT}
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_AUTO_CREATE_TOPIC_ENABLE=true
+      - KAFKA_REST_LOG4J_ROOT_LOGLEVEL=WARN
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    healthcheck:
+      test: nc -z localhost ${KAFKA_PORT} || exit -1
+      interval: 20s
+      timeout: 5s
+      retries: 10
+
   orders:
     environment:
       CONFIGURATION_HOST: configuration
       CONFIGURATION_PORT: ${CONFIGURATION_PORT}
       REGISTER_HOST: register
       REGISTER_PORT: ${REGISTER_PORT}
+      KAFKA_HOST: kafka
+      KAFKA_PORT: ${KAFKA_PORT}
     build:
       context: "../microservices/orders"
       dockerfile: "Dockerfile"
@@ -109,6 +137,8 @@ services:
         condition: service_healthy
       db-orders:
         condition: service_healthy
+      kafka:
+        condition: service_healthy
 
   payments:
     environment:
@@ -116,6 +146,8 @@ services:
       CONFIGURATION_PORT: ${CONFIGURATION_PORT}
       REGISTER_HOST: register
       REGISTER_PORT: ${REGISTER_PORT}
+      KAFKA_HOST: kafka
+      KAFKA_PORT: ${KAFKA_PORT}
     build:
       context: "../microservices/payments"
       dockerfile: "Dockerfile"
@@ -124,6 +156,8 @@ services:
         condition: service_healthy
       db-payments:
         condition: service_healthy
+      kafka:
+        condition: service_healthy
 
   tickets:
     environment:
@@ -131,6 +165,8 @@ services:
       CONFIGURATION_PORT: ${CONFIGURATION_PORT}
       REGISTER_HOST: register
       REGISTER_PORT: ${REGISTER_PORT}
+      KAFKA_HOST: kafka
+      KAFKA_PORT: ${KAFKA_PORT}
     build:
       context: "../microservices/tickets"
       dockerfile: "Dockerfile"
@@ -138,4 +174,6 @@ services:
       gateway:
         condition: service_healthy
       db-tickets:
+        condition: service_healthy
+      kafka:
         condition: service_healthy
