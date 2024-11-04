@@ -11,7 +11,7 @@ import java.util.List;
 @RequestMapping("/api")
 public interface PaymentsController {
 
-    @GetMapping("/{id}")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     List<PaymentsResponseDto> get();
 }

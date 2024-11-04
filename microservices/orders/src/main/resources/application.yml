@@ -7,17 +7,3 @@ spring:
     fail-fast: true
   profiles:
     active: microservice
-
-  kafka:
-    service: ${KAFKA_HOST:localhost}:${KAFKA_PORT:9092}
-
-app:
-  kafka:
-    from-tickets-id: "from-tickets"
-    from-payments-id: "from-payments"
-
-    tickets-orders-topic: "tickets-to-orders"
-    payments-orders-topic: "payments-to-orders"
-
-    orders-tickets-topic: "orders-to-tickets"
-    orders-payments-topic: "orders-to-payments"
